@@ -28,7 +28,7 @@ services:
         python manage.py makemigrations &&
         python manage.py migrate &&
         DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --username=admin --email=admin@example.com --noinput 
-        && python manage.py runserver 0.0.0.0:8000
+        && python manage.py runserver 34.230.44.128:8000
         "
     volumes:
       - .:/django_mongodb_docker
