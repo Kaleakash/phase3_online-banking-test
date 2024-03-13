@@ -1,0 +1,62 @@
+version: '3.6'
+volumes:
+  init-db:
+  data-db:
+services:
+  frontend:
+    restart: always
+    command : npm start
+    container_name: front
+    build: ./frontend/my-banking-app-frontend/
+    image: akashkale/reactjs-app:k1 
+    ports:
+      - "3000:3000"
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - ./data-db:/data/db
+    ports:
+      - 27017:27017
+  backend:
+    build:  ./backend/banking-rest-api-develop-using-python-django/banksystem/
+    image: akashkale/python-app:k1
+    restart: always
+    #command: python manage.py runserver 0.0.0.0:8000\
+    command: bash -c "
+        python manage.py makemigrations &&
+        python manage.py migrate &&
+        DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --username=admin --email=admin@example.com --noinput 
+        && python manage.py runserver 0.0.0.0:8000
+        "
+    volumes:
+      - .:/django_mongodb_docker
+    ports:
+      - 8000:8000
+    links:
+      - mongodb
+  #   depends_on:
+  #     - migration
+  
+  # migration:
+  #   build: ./backend/banking-rest-api-develop-using-python-django/banksystem/
+  #   image: app
+  #   command: python manage.py migrate
+  #   volumes:
+  #     - .:/django_mongodb_docker
+  #   links:
+  #     - mongodb
+  #   depends_on:
+  #     - make_migrations
+
+  # make_migrations:
+  #   build: ./backend/banking-rest-api-develop-using-python-django/banksystem/
+  #   image: app
+  #   command: python manage.py makemigrations
+  #   volumes:
+  #     - .:/django_mongodb_docker
+  #   links:
+  #     - mongodb
+  #   depends_on:
+  #     - mongodb
