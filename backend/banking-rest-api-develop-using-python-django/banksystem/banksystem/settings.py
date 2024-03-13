@@ -58,7 +58,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    'http://34.230.44.128:3000',
 ]
 ROOT_URLCONF = 'banksystem.urls'
 
