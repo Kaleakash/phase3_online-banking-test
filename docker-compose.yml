@@ -22,39 +22,36 @@ services:
   backend:
     build:  ./backend/banking-rest-api-develop-using-python-django/banksystem/
     image: akashkale/python-app:k1
-    #restart: always
+    restart: always
     #command: python manage.py runserver 0.0.0.0:8000\
-    command: bash -c "
-        python manage.py makemigrations &&
-        python manage.py migrate 
-        && python manage.py runserver"
+    command: python manage.py runserver 0.0.0.0:8000
     # volumes:
     #   - .:/django_mongodb_docker
     ports:
       - 8000:8000
     links:
       - mongodb
-  #   depends_on:
-  #     - migration
+    depends_on:
+      - migration
   
-  # migration:
-  #   build: ./backend/banking-rest-api-develop-using-python-django/banksystem/
-  #   image: app
-  #   command: python manage.py migrate
-  #   volumes:
-  #     - .:/django_mongodb_docker
-  #   links:
-  #     - mongodb
-  #   depends_on:
-  #     - make_migrations
+  migration:
+    build: ./backend/banking-rest-api-develop-using-python-django/banksystem/
+    image: app
+    command: python manage.py migrate
+    # volumes:
+    #   - .:/django_mongodb_docker
+    links:
+      - mongodb
+    depends_on:
+      - make_migrations
 
-  # make_migrations:
-  #   build: ./backend/banking-rest-api-develop-using-python-django/banksystem/
-  #   image: app
-  #   command: python manage.py makemigrations
-  #   volumes:
-  #     - .:/django_mongodb_docker
-  #   links:
-  #     - mongodb
-  #   depends_on:
-  #     - mongodb
+  make_migrations:
+    build: ./backend/banking-rest-api-develop-using-python-django/banksystem/
+    image: app
+    command: python manage.py makemigrations
+    # volumes:
+    #   - .:/django_mongodb_docker
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
