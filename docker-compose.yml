@@ -1,7 +1,7 @@
 version: '3.6'
-volumes:
-  init-db:
-  data-db:
+# volumes:
+#   init-db:
+#   data-db:
 services:
   frontend:
     restart: always
@@ -14,9 +14,9 @@ services:
   mongodb:
     image: mongo
     restart: always
-    volumes:
-      - ./init-db:/docker-entrypoint-initdb.d
-      - ./data-db:/data/db
+    # volumes:
+    #   - ./init-db:/docker-entrypoint-initdb.d
+    #   - ./data-db:/data/db
     ports:
       - 27017:27017
   backend:
@@ -28,10 +28,9 @@ services:
         python manage.py makemigrations &&
         python manage.py migrate &&
         DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --username=admin --email=admin@example.com --noinput 
-        && python manage.py runserver 34.230.44.128:8000
-        "
-    volumes:
-      - .:/django_mongodb_docker
+        && python manage.py runserver 34.230.44.128:8000"
+    # volumes:
+    #   - .:/django_mongodb_docker
     ports:
       - 8000:8000
     links:
