@@ -27,7 +27,7 @@ services:
     command: bash -c "
         python manage.py makemigrations &&
         python manage.py migrate 
-        && python manage.py runserver 34.230.44.128:8000"
+        && python manage.py runserver"
     # volumes:
     #   - .:/django_mongodb_docker
     ports:
